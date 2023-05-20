@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import ContactPage from './pages/contact';
 import BookPage from './pages/book';
 import HomePage from './components/Home';
+import RegisterPage from './pages/register';
 
 
 
@@ -41,11 +42,16 @@ export default function App() {
           path: "book",
           element: <BookPage />,
         },
+
       ],
     },
     {
       path: "/login",
       element: <LoginPage />,
+    },
+    {
+      path: "/register",
+      element: <RegisterPage />,
     },
   ]);
   return (
