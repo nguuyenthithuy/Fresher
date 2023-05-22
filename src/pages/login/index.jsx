@@ -1,15 +1,30 @@
 
-import { Button, Checkbox, Form, Input, message, notification } from 'antd';
+import { Button, Checkbox, Descriptions, Form, Input, message, notification } from 'antd';
 import './login.scss';
 import { useNavigate } from 'react-router-dom';
+import { callLogin } from '../../services/api';
 
 
 
 const LoginPage = () => {
 
     const navigate = useNavigate();
-    const onFinish = (values) => {
-        console.log("check login")
+
+    const onFinish = async (values) => {
+        const { username, password } = values;
+
+        const res = await callLogin(username, password);
+        if (res?.data) {
+            message.success("Đăng nhập thành công")
+            navigate('/');
+        }
+        else {
+            notification.error({
+                message: "Có lỗi xảy ra",
+                Descriptions: res.message && Array.isArray(res.message) ? res.message[0] : res.message,
+                duration: 5
+            })
+        }
     }
     const handleOnclick = () => {
         navigate('/register')
@@ -37,8 +52,8 @@ const LoginPage = () => {
                             <></>
                             <Form.Item
                                 labelCol={{ span: 24 }}
-                                label="Họ tên"
-                                name="fullName"
+                                label="Email"
+                                name="username"
                                 rules={[{ required: true, message: 'Please input your username!' }]}
                             >
                                 <Input />
