@@ -1,9 +1,10 @@
 import axios from "axios";
 const baseUrl = import.meta.env.VITE_BACKEND_URL
 const instance = axios.create({
-    baseURL: baseUrl
-
+    baseURL: baseUrl,
+    withCredentials: true,
 });
+
 
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
