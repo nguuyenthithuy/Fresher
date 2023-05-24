@@ -3,6 +3,8 @@ import { Button, Checkbox, Descriptions, Form, Input, message, notification } fr
 import './login.scss';
 import { useNavigate } from 'react-router-dom';
 import { callLogin } from '../../services/api';
+import { useDispatch } from 'react-redux';
+import { doingLogin } from '../../redux/account/accountSlice';
 
 
 
@@ -10,12 +12,16 @@ const LoginPage = () => {
 
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+
     const onFinish = async (values) => {
         const { username, password } = values;
 
         const res = await callLogin(username, password);
         if (res?.data) {
             localStorage.setItem("access_token", res.data.access_token)
+            dispatch(doingLogin(res.data.user))  // hiển thị ở redux web ( gửi lên )
+            // console.log('check dispatch:', dispatch)
             message.success("Đăng nhập thành công")
             navigate('/');
         }
