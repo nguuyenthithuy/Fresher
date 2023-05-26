@@ -12,8 +12,12 @@ import BookPage from './pages/book';
 import HomePage from './components/Home';
 import RegisterPage from './pages/register';
 import { callFetchAccount } from './services/api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAccountf5 } from './redux/account/accountSlice';
+import LoadingPage from './components/Loading';
+import NotFound from './components/NotFound';
+import AdminPage from './pages/admin';
+import ProtectedRoute from './components/ProtectedRoute';
 
 
 
@@ -31,7 +35,12 @@ const LAyout = () => {
 export default function App() {
 
   const dispatch = useDispatch();
+
+  const isAuthentited = useSelector(state => state.account.isAuthentited)
   const getAccoutndF5 = async () => {
+    if (window.location.pathname === '/login' ||
+      window.location.pathname === '/admin'
+    ) return;
     const res = await callFetchAccount();
     console.log("check res", res)
     if (res && res.data) {
@@ -48,12 +57,35 @@ export default function App() {
     {
       path: "/",
       element: <LAyout />,
-      errorElement: <div>Defound</div>,
+      errorElement: <div><NotFound /></div>,
 
       children: [
         { index: true, element: <HomePage /> },
         {
           path: "contact",
+          element: <ContactPage />,
+        },
+        {
+          path: "book",
+          element: <BookPage />,
+        },
+
+      ],
+    },
+    {
+      path: "/admin",
+      element: <LAyout />,
+      errorElement: <div><NotFound /></div>,
+
+      children: [
+        {
+          index: true, element:
+            <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>
+        },
+        {
+          path: "user",
           element: <ContactPage />,
         },
         {
@@ -74,7 +106,15 @@ export default function App() {
   ]);
   return (
     <>
-      <RouterProvider router={router} />
+      {isAuthentited === true || window.location.pathname === '/login' ||
+        window.location.pathname === '/admin' ||
+        window.location.pathname === '/' ?
+        <RouterProvider router={router} />
+
+        :
+
+        <LoadingPage />
+      }
     </>
   )
 }
