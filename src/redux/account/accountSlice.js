@@ -36,7 +36,7 @@ export const accountSlice = createSlice({
             // immutable state based off those changes
 
             state.isAuthentited = true;
-            state.user = action.payload
+            state.user = action.payload.user
         },
         decrement: (state) => {
             state.value -= 1;
