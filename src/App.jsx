@@ -51,7 +51,7 @@ export default function App() {
 
   const dispatch = useDispatch();
 
-  const isAuthentited = useSelector(state => state.account.isAuthentited)
+  const isLoading = useSelector(state => state.account.isLoading)
   const getAccoutndF5 = async () => {
     if (window.location.pathname === '/login' ||
       window.location.pathname === '/register'
@@ -122,7 +122,7 @@ export default function App() {
   ]);
   return (
     <>
-      {isAuthentited === true || window.location.pathname === '/login' ||
+      {isLoading === false || window.location.pathname === '/login' ||
         window.location.pathname === '/register' ||
         window.location.pathname === '/'
         ?
