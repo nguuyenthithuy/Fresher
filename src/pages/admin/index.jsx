@@ -1,7 +1,9 @@
+import AdminLayout from "../../components/admin/adminLayout";
+
 const AdminPage = () => {
     return (
         <>
-            darboard admin
+            <AdminLayout />
         </>
     )
 }

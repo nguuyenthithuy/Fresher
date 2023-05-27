@@ -38,7 +38,7 @@ const LAyoutAdmin = () => {
 
   return (
     <div className='Layout'>
-      {isAdminRoute && userRole === 'ADMIN' && <Header />}
+      {/* {isAdminRoute && userRole === 'ADMIN' && <Header />} */}
 
       <Outlet />
       {isAdminRoute && userRole === 'ADMIN' && <Footer />}
@@ -55,7 +55,7 @@ export default function App() {
   const getAccoutndF5 = async () => {
     if (window.location.pathname === '/login' ||
       window.location.pathname === '/register'
-      || window.location.pathname === '/'
+
     ) return;
     const res = await callFetchAccount();
     console.log("check res", res)
@@ -125,7 +125,7 @@ export default function App() {
       {isAuthentited === true || window.location.pathname === '/login' ||
         window.location.pathname === '/register' ||
         window.location.pathname === '/'
-        || window.location.pathname === '/' ?
+        ?
         <RouterProvider router={router} />
 
         :
