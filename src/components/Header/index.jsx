@@ -14,7 +14,7 @@ import { doLogoutAction } from '../../redux/account/accountSlice';
 const Header = () => {
 
     const [openDrawer, setOpenDrawer] = useState(false);
-    const isAuthenticated = useSelector(state => state.account.isAuthentited);
+    const isLoading = useSelector(state => state.account.isLoading);
     const user = useSelector(state => state.account.user);
     const navigate = useNavigate();
     const dispatch = useDispatch()
@@ -75,7 +75,7 @@ const Header = () => {
                             </li>
                             <li className="navigation__item mobile"><Divider type='vertical' /></li>
                             <li className="navigation__item mobile">
-                                {!isAuthenticated ?
+                                {isLoading ?
                                     <span onClick={() => navigate('/login')}> Tài Khoản</span>
                                     :
                                     <Dropdown menu={{ items }} trigger={['click']}>

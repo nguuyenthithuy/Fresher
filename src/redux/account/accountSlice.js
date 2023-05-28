@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     isAuthentited: false,
@@ -6,7 +6,7 @@ const initialState = {
     user: {
         email: "",
         phone: "",
-        "fullName": "",
+        fullName: "",
         "role": "",
         "avatar": "",
         "id": "1"
@@ -47,7 +47,7 @@ export const accountSlice = createSlice({
             // immutable state based off those changes
 
             localStorage.removeItem('access_token');
-            state.isAuthentited = false;
+            state.isLoading = true;
             state.user = {
                 email: "",
                 phone: "",
