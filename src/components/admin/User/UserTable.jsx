@@ -3,6 +3,7 @@ import React from 'react';
 
 import { Table, Row, Col } from 'antd';
 import InputInsearch from './InputInsearch';
+
 // import InputSearch from './InputInsearch';
 // import type { ColumnsType, TableProps } from 'antd/es/table';
 
@@ -47,7 +48,7 @@ const UserTable = () => {
         },
     ];
 
-    const data = [
+    let data = [
         {
             key: '1',
             name: 'John Brown',
@@ -77,6 +78,8 @@ const UserTable = () => {
             english: 89,
         },
     ];
+    data = data.concat(data).concat(data).concat(data).concat(data);
+    data = data.concat(data);
 
     const onChange = (pagination, filters, sorter, extra) => {
         console.log('params', pagination, filters, sorter, extra);
@@ -91,6 +94,9 @@ const UserTable = () => {
                 columns={columns}
                 dataSource={data}
                 onChange={onChange}
+                pagination={
+                    { current: 1, pageSize: 1, showSizeChanger: true }
+                }
             />
 
 
