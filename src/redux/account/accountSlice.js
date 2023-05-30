@@ -24,7 +24,7 @@ export const accountSlice = createSlice({
             // doesn't actually mutate the state because it uses the Immer library,
             // which detects changes to a "draft state" and produces a brand new
             // immutable state based off those changes
-
+            state.isAuthentited = true;
             state.isLoading = false;
             state.user = action.payload
             console.log('check action', action),
@@ -36,7 +36,7 @@ export const accountSlice = createSlice({
             // doesn't actually mutate the state because it uses the Immer library,
             // which detects changes to a "draft state" and produces a brand new
             // immutable state based off those changes
-
+            state.isAuthentited = true;
             state.isLoading = false;
             state.user = action.payload.user
         },

@@ -13,10 +13,12 @@ import {
 import { Layout, Menu, Dropdown, Space, message } from 'antd';
 import { Outlet, useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
-import './layout.scss';
+import '../layout.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { callLogout } from '../../services/api';
-import { doLogoutAction } from '../../redux/account/accountSlice';
+import { callLogout } from '../../../services/api';
+import { doLogoutAction } from '../../../redux/account/accountSlice';
+import UserTable from './UserTable';
+
 
 
 const { Content, Footer, Sider } = Layout;
@@ -57,7 +59,7 @@ const items = [
 
 ];
 
-const AdminLayout = () => {
+const AdminLayoutUser = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [activeMenu, setActiveMenu] = useState('dashboard');
     const user = useSelector(state => state.account.user);
@@ -129,10 +131,9 @@ const AdminLayout = () => {
                     </Dropdown>
                 </div>
                 <Content>
-
-                    {/* <span className='ok'>
+                    <span className='ok'>
                         <UserTable />
-                    </span> */}
+                    </span>
                     <Outlet />
                 </Content>
                 <Footer style={{ padding: 0 }}>
@@ -143,4 +144,4 @@ const AdminLayout = () => {
     );
 };
 
-export default AdminLayout;
+export default AdminLayoutUser;

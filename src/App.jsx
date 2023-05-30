@@ -102,7 +102,7 @@ export default function App() {
         },
         {
           path: "user",
-          element: <ContactPage />,
+          element: <ContactPage />
         },
         {
           path: "book",

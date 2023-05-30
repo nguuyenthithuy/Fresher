@@ -1,7 +1,11 @@
+import AdminLayoutUser from "../../components/admin/User/adminLayoutUser";
+
+
 const ContactPage = () => {
     return (
         <>
-            Contact Page
+
+            <AdminLayoutUser />
         </>
     )
 }
