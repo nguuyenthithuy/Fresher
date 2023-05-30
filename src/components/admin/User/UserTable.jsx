@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 import { Table, Row, Col } from 'antd';
 import InputInsearch from './InputInsearch';
+import { callFetchListUser } from '../../../services/api';
 
 // import InputSearch from './InputInsearch';
 // import type { ColumnsType, TableProps } from 'antd/es/table';
@@ -15,74 +16,72 @@ import InputInsearch from './InputInsearch';
 //   english: number;
 // }
 const UserTable = () => {
+    const [listUser, setListUser] = useState([]);
+    const [current, setCurrent] = useState(1);
+    const [pageSize, setPageSize] = useState(2);
+    const [total, setTotal] = useState(0);
 
 
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
+            title: 'Id',
+            dataIndex: '_id',
         },
         {
-            title: 'Chinese Score',
-            dataIndex: 'chinese',
-            sorter: {
-                compare: (a, b) => a.chinese - b.chinese,
-                multiple: 3,
-            },
+            title: 'Tên hiển thị',
+            dataIndex: 'fullName',
+            sorter: true,
         },
         {
-            title: 'Math Score',
-            dataIndex: 'math',
-            sorter: {
-                compare: (a, b) => a.math - b.math,
-                multiple: 2,
-            },
+            title: 'Email',
+            dataIndex: 'email',
+            sorter: true,
         },
         {
-            title: 'English Score',
-            dataIndex: 'english',
-            sorter: {
-                compare: (a, b) => a.english - b.english,
-                multiple: 1,
-            },
+            title: 'Số điện thoại',
+            dataIndex: 'phone',
+            sorter: true,
+        },
+        {
+            title: 'Action',
+            render: (text, record, index) => {
+
+                return (
+                    <>
+                        <button>Delete</button>
+                    </>
+                )
+            }
         },
     ];
 
-    let data = [
-        {
-            key: '1',
-            name: 'John Brown',
-            chinese: 98,
-            math: 60,
-            english: 70,
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            chinese: 98,
-            math: 66,
-            english: 89,
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            chinese: 98,
-            math: 90,
-            english: 70,
-        },
-        {
-            key: '4',
-            name: 'Jim Red',
-            chinese: 88,
-            math: 99,
-            english: 89,
-        },
-    ];
-    data = data.concat(data).concat(data).concat(data).concat(data);
-    data = data.concat(data);
+    useEffect(() => {
+        fetchUser()
+
+    })
+    const fetchUser = async () => {
+        const query = `current=${current}&pageSize=${pageSize}`;
+        const res = await callFetchListUser(query);
+        if (res && res.data) {
+            setListUser(res.data.result)
+            setTotal(res.data.meta.total)
+        }
+    }
+
+
+
+
+
 
     const onChange = (pagination, filters, sorter, extra) => {
-        console.log('params', pagination, filters, sorter, extra);
+        console.log('check pagguineatoion', pagination)
+        if (pagination && pagination.current !== current) {
+            setCurrent(pagination.current)
+        }
+        if (pagination && pagination.pageSize !== pageSize) {
+            setPageSize(pagination.pageSize)
+            setCurrent(1);
+        }
     };
     return (
         <>
@@ -92,10 +91,17 @@ const UserTable = () => {
             <Table
                 className='def'
                 columns={columns}
-                dataSource={data}
+                dataSource={listUser}
                 onChange={onChange}
+                rowKey="_id"
                 pagination={
-                    { current: 1, pageSize: 1, showSizeChanger: true }
+                    {
+                        current: current,
+                        pageSize: pageSize,
+                        showSizeChanger: true,
+                        total: total
+
+                    }
                 }
             />
 
