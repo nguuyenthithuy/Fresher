@@ -5,28 +5,24 @@ import { Table, Row, Col } from 'antd';
 import { callFetchListUser } from '../../../services/api';
 import InputSearch from './InputInsearch';
 
-// import InputSearch from './InputInsearch';
-// import type { ColumnsType, TableProps } from 'antd/es/table';
-
-// interface DataType {
-//   key: React.Key;
-//   name: string;
-//   chinese: number;
-//   math: number;
-//   english: number;
-// }
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(2);
     const [total, setTotal] = useState(0);
-
-
+    const [filter, setFilter] = useState("");
+    const [sortQuery, setSortQuery] = useState("");
 
     const columns = [
         {
             title: 'Id',
             dataIndex: '_id',
+
+            render: (text, record, index) => {
+                console.log("check record", record)
+
+            }
+
         },
         {
             title: 'Tên hiển thị',
@@ -59,14 +55,18 @@ const UserTable = () => {
     useEffect(() => {
         fetchUser()
 
-    }, [current, pageSize])
+    }, [current, pageSize, filter, sortQuery])
 
 
-    const fetchUser = async (searchFilter) => {
-        console.log('check filter', searchFilter)
+    const fetchUser = async () => {
+
         let query = `current=${current}&pageSize=${pageSize}`;
-        if (searchFilter) { //3
-            query += `${searchFilter}`
+        if (filter) { //3
+            query += `&${filter}`
+        }
+        console.log('check filter', filter)
+        if (sortQuery) {
+            query += `&${sortQuery}`
         }
         const res = await callFetchListUser(query);
         if (res && res.data) {
@@ -74,11 +74,6 @@ const UserTable = () => {
             setTotal(res.data.meta.total)
         }
     }
-
-
-
-
-
 
     const onChange = (pagination, filters, sorter, extra) => {
         console.log('check pagguineatoion', pagination)
@@ -89,18 +84,27 @@ const UserTable = () => {
             setPageSize(pagination.pageSize)
             setCurrent(1);
         }
+        console.log('cgeck sorter', sorter)
+        if (sorter && sorter.field) {
+            const q = sorter.order === 'ascend' ? `sort=${sorter.field}` : `sort=-${sorter.field}`
+            setSortQuery(q);
+        }
+
     };
 
     const handleSearch = (query) => {
-        console.log('check query', query)
-        fetchUser(query)
+        setFilter(query)
     }
 
     // Handlesearch : 3 ( props)
     return (
         <>
 
-            <InputSearch handleSearch={handleSearch} />
+            <InputSearch handleSearch={handleSearch}
+                setFilter={setFilter}
+
+
+            />
 
             <Table
                 className='def'
@@ -118,6 +122,8 @@ const UserTable = () => {
                     }
                 }
             />
+
+
 
 
 
