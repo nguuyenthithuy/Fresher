@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Row, Col } from 'antd';
 import { callFetchListUser } from '../../../services/api';
 import InputSearch from './InputInsearch';
+import UserDetail from './UserDetail';
 
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -13,6 +14,9 @@ const UserTable = () => {
     const [filter, setFilter] = useState("");
     const [sortQuery, setSortQuery] = useState("");
 
+    const [openDetail, setOpenDetail] = useState(false);
+    const [dataDetail, setDataDetail] = useState('');
+
     const columns = [
         {
             title: 'Id',
@@ -20,6 +24,15 @@ const UserTable = () => {
 
             render: (text, record, index) => {
                 console.log("check record", record)
+                return (
+                    <a href='#' onClick={() => {
+                        setOpenDetail(true);
+                        setDataDetail(record);
+                    }}>
+                        {record._id}
+
+                    </a>
+                )
 
             }
 
@@ -123,6 +136,12 @@ const UserTable = () => {
                 }
             />
 
+            <UserDetail
+                openDetail={openDetail}
+                setOpenDetail={setOpenDetail}
+                dataDetail={dataDetail}
+                setDataDetail={setDataDetail}
+            />
 
 
 
