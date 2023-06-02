@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 
 import { Table, Row, Col } from 'antd';
-import InputInsearch from './InputInsearch';
 import { callFetchListUser } from '../../../services/api';
+import InputSearch from './InputInsearch';
 
 // import InputSearch from './InputInsearch';
 // import type { ColumnsType, TableProps } from 'antd/es/table';
@@ -20,6 +20,7 @@ const UserTable = () => {
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(2);
     const [total, setTotal] = useState(0);
+
 
 
     const columns = [
@@ -58,9 +59,15 @@ const UserTable = () => {
     useEffect(() => {
         fetchUser()
 
-    })
-    const fetchUser = async () => {
-        const query = `current=${current}&pageSize=${pageSize}`;
+    }, [current, pageSize])
+
+
+    const fetchUser = async (searchFilter) => {
+        console.log('check filter', searchFilter)
+        let query = `current=${current}&pageSize=${pageSize}`;
+        if (searchFilter) { //3
+            query += `${searchFilter}`
+        }
         const res = await callFetchListUser(query);
         if (res && res.data) {
             setListUser(res.data.result)
@@ -83,10 +90,17 @@ const UserTable = () => {
             setCurrent(1);
         }
     };
+
+    const handleSearch = (query) => {
+        console.log('check query', query)
+        fetchUser(query)
+    }
+
+    // Handlesearch : 3 ( props)
     return (
         <>
 
-            <InputInsearch />
+            <InputSearch handleSearch={handleSearch} />
 
             <Table
                 className='def'
