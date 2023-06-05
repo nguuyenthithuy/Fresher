@@ -10,7 +10,7 @@ import {
     MenuUnfoldOutlined,
     DownOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Dropdown, Space, message } from 'antd';
+import { Layout, Menu, Dropdown, Space, message, Avatar } from 'antd';
 import { Outlet, useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import './layout.scss';
@@ -89,6 +89,8 @@ const AdminLayout = () => {
         },
 
     ];
+    const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${user?.avatar}`;
+
 
 
     return (
@@ -122,7 +124,8 @@ const AdminLayout = () => {
                     <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
                         <a onClick={(e) => e.preventDefault()}>
                             <Space>
-                                Welcome {user?.fullName}
+                                <Avatar src={urlAvatar} />
+                                {user?.fullName}
                                 <DownOutlined />
                             </Space>
                         </a>

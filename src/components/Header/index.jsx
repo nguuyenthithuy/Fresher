@@ -1,9 +1,9 @@
 import { FaReact } from 'react-icons/fa'
 import { VscSearchFuzzy } from 'react-icons/vsc';
-import { Divider, Badge, Drawer, message } from 'antd';
+import { Divider, Badge, Drawer, message, Avatar } from 'antd';
 import { FiShoppingCart } from 'react-icons/fi';
 import './Header.scss'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
@@ -29,7 +29,7 @@ const Header = () => {
         }
     }
 
-    const items = [
+    let items = [
         {
             label: <label style={{ cursor: 'pointer' }}>Quản lý tài khoản</label>,
             key: 'account',
@@ -43,6 +43,14 @@ const Header = () => {
         },
 
     ];
+
+    if (user.role === "ADMIN") {
+        items.unshift({
+            label: <Link to="/admin"> Trang quản trị </Link>,
+            key: 'admin',
+        })
+    }
+    const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${user?.avatar}`;
     return (
         <>
             <div className='header-container'>
@@ -81,7 +89,8 @@ const Header = () => {
                                     <Dropdown menu={{ items }} trigger={['click']}>
                                         <a onClick={(e) => e.preventDefault()}>
                                             <Space>
-                                                Welcome {user?.fullName}
+                                                <Avatar src={urlAvatar} />
+                                                {user?.fullName}
                                                 <DownOutlined />
                                             </Space>
                                         </a>

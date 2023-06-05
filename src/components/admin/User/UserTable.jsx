@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 
-import { Table, Row, Col } from 'antd';
+import { Table, Row, Col, Button } from 'antd';
 import { callFetchListUser } from '../../../services/api';
 import InputSearch from './InputInsearch';
 import UserDetail from './UserDetail';
+import { CloudUploadOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -33,9 +34,7 @@ const UserTable = () => {
 
                     </a>
                 )
-
             }
-
         },
         {
             title: 'Tên hiển thị',
@@ -69,7 +68,6 @@ const UserTable = () => {
         fetchUser()
 
     }, [current, pageSize, filter, sortQuery])
-
 
     const fetchUser = async () => {
 
@@ -109,29 +107,72 @@ const UserTable = () => {
         setFilter(query)
     }
 
+    const renderHeader = () => {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Table List User</span>
+                <span style={{ display: 'flex', gap: 15 }}>
+                    <Button
+                        icon={<ExportOutlined />}
+                        type='primary'
+                    >
+                        Export
+                    </Button>
+
+                    <Button
+                        icon={<CloudUploadOutlined />}
+                        type='primary'
+                    >
+                        Import
+                    </Button>
+
+                    <Button
+                        icon={<PlusOutlined />}
+                        type='primary'
+                    >
+                        Thêm mới
+                    </Button>
+
+                    <Button
+                        type='ghost' onClick={() => {
+                            setFilter("");
+                            setSortQuery("")
+                        }}
+                    >
+                        <ReloadOutlined />
+                    </Button>
+                </span>
+            </div>
+        )
+    }
     // Handlesearch : 3 ( props)
     return (
         <>
 
             <InputSearch handleSearch={handleSearch}
                 setFilter={setFilter}
-
-
             />
 
             <Table
                 className='def'
+                title={renderHeader}
                 columns={columns}
                 dataSource={listUser}
                 onChange={onChange}
                 rowKey="_id"
                 pagination={
                     {
+
+                        showTotal: (total, range) => {
+                            return (
+                                <div> {range[0]}-{range[1]} trên {total}
+                                    rows</div>
+                            )
+                        },
                         current: current,
                         pageSize: pageSize,
                         showSizeChanger: true,
                         total: total
-
                     }
                 }
             />
@@ -142,10 +183,6 @@ const UserTable = () => {
                 dataDetail={dataDetail}
                 setDataDetail={setDataDetail}
             />
-
-
-
-
         </>
     )
 
