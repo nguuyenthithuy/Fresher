@@ -6,6 +6,7 @@ import { callFetchListUser } from '../../../services/api';
 import InputSearch from './InputInsearch';
 import UserDetail from './UserDetail';
 import { CloudUploadOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import UserModalCreate from './UserModalCreate';
 
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -17,6 +18,8 @@ const UserTable = () => {
 
     const [openDetail, setOpenDetail] = useState(false);
     const [dataDetail, setDataDetail] = useState('');
+
+    const [openCreate, setOpenCreat] = useState(false)
 
     const columns = [
         {
@@ -129,6 +132,7 @@ const UserTable = () => {
                     <Button
                         icon={<PlusOutlined />}
                         type='primary'
+                        onClick={() => setOpenCreat(true)}
                     >
                         Thêm mới
                     </Button>
@@ -183,6 +187,15 @@ const UserTable = () => {
                 dataDetail={dataDetail}
                 setDataDetail={setDataDetail}
             />
+
+            <UserModalCreate
+                openCreate={openCreate}
+                setOpenCreat={setOpenCreat}
+                fetchUser={fetchUser}
+
+            />
+
+
         </>
     )
 

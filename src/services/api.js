@@ -16,3 +16,6 @@ export const callLogout = () => {
 export const callFetchListUser = (query) => {
     return axios.get(`/api/v1/user?${query}`)
 }
+export const callCreatedUser = (fullName, email, password, phone) => {
+    return axios.post('/api/v1/user', { fullName, email, password, phone })
+}
