@@ -57,6 +57,11 @@ const UserTable = () => {
             sorter: true,
         },
         {
+            title: 'Ngày tạo',
+            dataIndex: 'createdAt',
+            sorter: true,
+        },
+        {
             title: 'Action',
             render: (text, record, index) => {
 

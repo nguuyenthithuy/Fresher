@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import { message, Modal, Table, Upload } from 'antd';
-
+import *as XLSX from 'xlsx'
 const { Dragger } = Upload;
 const UserImport = (props) => {
 
     const { openUpload, setOpenUpload } = props
+    const [dataExcel, setDataExcel] = useState([])
 
     const dummyRequest = ({ file, onSuccess }) => {
         setTimeout(() => {
@@ -24,12 +25,39 @@ const UserImport = (props) => {
 
         customRequest: dummyRequest, // custom file ko dùng action
         onChange(info) {
+            console.log('check info', info)
             const { status } = info.file;
             if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
+                console.log('check fiel', info.file, info.fileList);
             }
             if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
+                if (info.fileList && info.fileList.length > 0) {
+                    const file = info.fileList[0].originFileObj
+
+                    const reader = new FileReader();
+                    reader.readAsArrayBuffer(file);
+                    reader.onload = function (e) {
+                        const data = new Uint8Array(e.target.result);
+
+                        const workbook = XLSX.read(data, { type: 'array' });
+
+                        // find the name of your sheet in the workbook first
+                        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+                        // convert to json format
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet, {
+                            header: ["fullName", "email", "phone"],
+                            range: 1
+                        });
+                        if (jsonData && jsonData.length > 0) {
+                            setDataExcel(jsonData)
+                        }
+                    };
+
+
+
+                }
+
             } else if (status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
             }
@@ -65,6 +93,7 @@ const UserImport = (props) => {
             </Dragger>
 
             <Table style={{ paddingTop: 20 }}
+                dataSource={dataExcel}
                 title={() => <span>Dữ liệu Upload</span>}
                 columns={[
                     { dataIndex: 'fullName', title: 'Tên hiển thị' },
