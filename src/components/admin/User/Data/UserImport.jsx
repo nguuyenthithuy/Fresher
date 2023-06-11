@@ -3,6 +3,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import { Descriptions, message, Modal, notification, Table, Upload } from 'antd';
 import *as XLSX from 'xlsx'
 import { callBulkCreatUser } from '../../../../services/api';
+import simplefile from './simplefile.xlsx?url'
 const { Dragger } = Upload;
 const UserImport = (props) => {
 
@@ -91,6 +92,8 @@ const UserImport = (props) => {
             })
         }
     }
+
+    // e => e.stopPropagation() ( dung thao tac o thao tac con khong dụng den thao tac cha)
     return (
 
         <Modal
@@ -113,7 +116,10 @@ const UserImport = (props) => {
                 <p className="ant-upload-hint">
                     Support for a single or bulk upload. Strictly prohibited from uploading company data or other
                     banned files.
+
                 </p>
+                <a onClick={e => e.stopPropagation()} href={simplefile} download>Download Sample File</a>
+
             </Dragger>
 
             <Table style={{ paddingTop: 20 }}
