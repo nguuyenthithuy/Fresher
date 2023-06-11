@@ -8,6 +8,7 @@ import UserDetail from './UserDetail';
 import { CloudUploadOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import UserModalCreate from './UserModalCreate';
 import UserImport from './Data/UserImport';
+import *as XLSX from 'xlsx'
 
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -117,6 +118,17 @@ const UserTable = () => {
         setFilter(query)
     }
 
+    const exportFile = () => {
+        if (listUser.length > 0) {
+            const worksheet = XLSX.utils.json_to_sheet(listUser);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+            //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+            XLSX.writeFile(workbook, "ExportUser.xlsx");
+        }
+
+    }
     const renderHeader = () => {
         return (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -125,6 +137,7 @@ const UserTable = () => {
                     <Button
                         icon={<ExportOutlined />}
                         type='primary'
+                        onClick={() => exportFile()}
                     >
                         Export
                     </Button>
