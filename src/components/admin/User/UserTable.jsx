@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 
-import { Table, Row, Col, Button } from 'antd';
-import { callFetchListUser } from '../../../services/api';
+import { Table, Row, Col, Button, Popconfirm, message, notification } from 'antd';
+import { callDeleteUser, callFetchListUser } from '../../../services/api';
 import InputSearch from './InputInsearch';
 import UserDetail from './UserDetail';
-import { CloudUploadOutlined, EditOutlined, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { CloudUploadOutlined, DeleteTwoTone, EditOutlined, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import UserModalCreate from './UserModalCreate';
 import UserImport from './Data/UserImport';
 import *as XLSX from 'xlsx'
@@ -27,6 +27,26 @@ const UserTable = () => {
 
     const [openUpdate, setOpenUpdate] = useState(false)
     const [dataUpdate, setDataUpdate] = useState("")
+
+
+
+
+    const handleDeleteUser = async (userId) => {
+        console.log('check userId', userId)
+        const res = await callDeleteUser(userId);
+        console.log('check res', res)
+        if (res && res.data) {
+            message.success('Xóa người dùng thành công')
+            fetchUser();
+        }
+        else {
+            notification.error({
+                message: 'Có lỗi xảy ra',
+                description: res.message
+            })
+        }
+    }
+
     const columns = [
         {
             title: 'Id',
@@ -71,7 +91,23 @@ const UserTable = () => {
 
                 return (
                     <>
-                        <button>Delete</button>
+                        <Popconfirm
+                            placement="leftTop"
+                            title={"Bạn chắc chắn muốn xóa user"}
+                            description={"Xác nhận xóa user"}
+                            onConfirm={() => handleDeleteUser(record._id)}
+                            okText="Xác nhận"
+                            cancelText="Hủy"
+
+                        >
+                            <span style={{ cursor: "pointer", margin: "0 20" }}>
+                                <DeleteTwoTone
+                                    twoToneColor="#f57800"
+                                />
+                            </span>
+                        </Popconfirm>
+
+
 
                         <EditTwoTone twoToneColor="#f57800" style={{ marginLeft: 20, cursor: "pointer" }}
                             onClick={() => {
