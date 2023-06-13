@@ -5,10 +5,11 @@ import { Table, Row, Col, Button } from 'antd';
 import { callFetchListUser } from '../../../services/api';
 import InputSearch from './InputInsearch';
 import UserDetail from './UserDetail';
-import { CloudUploadOutlined, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { CloudUploadOutlined, EditOutlined, EditTwoTone, ExportOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import UserModalCreate from './UserModalCreate';
 import UserImport from './Data/UserImport';
 import *as XLSX from 'xlsx'
+import UpdateUser from './UpdateUser';
 
 const UserTable = () => {
     const [listUser, setListUser] = useState([]);
@@ -24,6 +25,8 @@ const UserTable = () => {
     const [openCreate, setOpenCreat] = useState(false)
     const [openUpload, setOpenUpload] = useState(false)
 
+    const [openUpdate, setOpenUpdate] = useState(false)
+    const [dataUpdate, setDataUpdate] = useState("")
     const columns = [
         {
             title: 'Id',
@@ -69,6 +72,13 @@ const UserTable = () => {
                 return (
                     <>
                         <button>Delete</button>
+
+                        <EditTwoTone twoToneColor="#f57800" style={{ marginLeft: 20, cursor: "pointer" }}
+                            onClick={() => {
+                                setOpenUpdate(true)
+                                setDataUpdate(record)
+                            }}
+                        />
                     </>
                 )
             }
@@ -222,6 +232,12 @@ const UserTable = () => {
                 setOpenUpload={setOpenUpload}
             />
 
+            <UpdateUser
+                openUpdate={openUpdate}
+                setOpenUpdate={setOpenUpdate}
+                dataUpdate={dataUpdate}
+                setDataUpdate={setDataUpdate}
+            />
 
 
         </>
