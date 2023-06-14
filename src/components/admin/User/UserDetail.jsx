@@ -1,4 +1,4 @@
-import { Badge, Descriptions, Drawer } from "antd";
+import { Badge, Descriptions, Divider, Drawer } from "antd";
 import moment from "moment/moment";
 
 const UserDetail = (props) => {
@@ -21,7 +21,8 @@ const UserDetail = (props) => {
                 open={openDetail}
 
             >
-                <Descriptions title="Thông tin user" bordered>
+                <Descriptions title="Thông tin user" bordered
+                    column={2}>
                     <Descriptions.Item label="Id">{dataDetail._id}</Descriptions.Item>
                     <Descriptions.Item label="Tên hiển thị">{dataDetail.fullName}</Descriptions.Item>
                     <Descriptions.Item label="Email">{dataDetail.email}</Descriptions.Item>
@@ -38,6 +39,8 @@ const UserDetail = (props) => {
                     </Descriptions.Item>
 
                 </Descriptions>
+
+
             </Drawer>
         </>
     )
